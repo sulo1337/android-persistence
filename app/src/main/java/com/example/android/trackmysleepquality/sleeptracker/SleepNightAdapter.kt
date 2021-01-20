@@ -1,10 +1,12 @@
 package com.example.android.trackmysleepquality.sleeptracker
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.convertDurationToFormatted
@@ -25,7 +27,7 @@ class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
     //how to update the view holder
     override fun onBindViewHolder(holder: SleepNightAdapter.ViewHolder, position: Int) {
         val item = data[position]
-        holder.bind(item)
+        holder.bind(item, position)
     }
 
     //inflate the actual layout and pass it to the viewholder
@@ -35,12 +37,13 @@ class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
 
     //creating a view holder, note: id matches with the actual layout
     //create bind function to tell how to actually bind the data item into this view holder
+    //create from function to inflate the layout inside the view holder
     class ViewHolder private constructor(itemView: View): RecyclerView.ViewHolder(itemView){
         val sleepLength: TextView = itemView.findViewById(R.id.sleep_length)
         val sleepQuality: TextView = itemView.findViewById(R.id.quality_string)
         val qualityImage: ImageView = itemView.findViewById(R.id.imageView)
-
-        fun bind(item: SleepNight) {
+        val sleepItemContainer: ConstraintLayout = itemView.findViewById(R.id.sleep_item_container)
+        fun bind(item: SleepNight, position: Int) {
             val res = itemView.context.resources
             sleepLength.text = convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, res)
             sleepQuality.text = convertNumericQualityToString(item.sleepQuality, res)
